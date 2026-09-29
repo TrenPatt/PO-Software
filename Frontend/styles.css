@@ -1,0 +1,146 @@
+/* ================================
+   Global Styles
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+header {
+    width: 100%;
+    height: 80px;
+    background-color: #17365d;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 35px;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ================================
+   Left Side of Header
+================================ */
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.left-header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+
+/* Company Logo */
+
+.logo {
+    height: 50px;
+    width: auto;
+    display: block;
+}
+
+
+/* Company Name / Brand Text */
+
+.brand-text {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* ================================
+   Navigation
+================================ */
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    padding: 12px 18px;
+    border-radius: 6px;
+
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+}
+
+
+/* Hover Effect */
+
+nav a:hover {
+    background-color: #245486;
+}
+
+
+/* Active / Selected Link */
+
+nav a.active {
+    background-color: #2f75b5;
+}
+
+
+/* ================================
+   Mobile / Smaller Screens
+================================ */
+
+@media (max-width: 700px) {
+
+    header {
+        height: auto;
+        min-height: 80px;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        padding: 15px 20px;
+
+        gap: 15px;
+    }
+
+    .left-header {
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .logo {
+        height: 42px;
+    }
+}
