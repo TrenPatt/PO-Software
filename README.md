@@ -18,24 +18,18 @@ Follow these steps to install and run the PO Software application locally.
 
 Open a terminal and run:
 
-
 git clone https://github.com/TrenPatt/PO-Software.git
 cd PO-Software
 
-
 **2. Install project dependencies.**
 
-
 npm install
-
 
 On Windows PowerShell, use `npm.cmd install` if the standard command is blocked by the execution policy.
 
 **3. Create a local environment file.**
 
-
 Copy-Item .env.example .env
-
 
 **4. Configure environment variables.**
 
@@ -57,7 +51,6 @@ npm run create-admin
 On Windows PowerShell, use:
 
 npm.cmd run create-admin
-
 
 **6. Start the application.**
 
@@ -94,7 +87,6 @@ http://localhost:3000
 BEFORE STARTING TO WORK 
 
 git pull origin main
-
 
 AFTER DONE WORKING
 <<<<<<< HEAD
