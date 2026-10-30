@@ -90,6 +90,17 @@ Navigate to the following address in your browser:
 
 http://localhost:3000
 
+**10. Push and Pull**
+BEFORE STARTING TO WORK 
+git pull origin main
+
+
+AFTER DONE WORKING
+git add .
+ git status
+ git commit -m "Describe the changes made"
+ git push origin main
+
 ### Important Notes
 
 - The SQLite database is automatically created locally when the application initializes.
