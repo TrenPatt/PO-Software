@@ -2,26 +2,84 @@
 
 PO-Software is a local purchase-order management application built with Node.js, Express, and SQLite. It provides secure authentication, persistent data storage, and role-based access control for managing purchase orders and users.
 
-## Local Setup
+## Installation and Setup
 
-1. Ensure Node.js 22 LTS is installed.
-2. Open a terminal in the project root.
-3. Install dependencies:
-   npm install
-   On Windows PowerShell, you can use `npm.cmd install`.
+Follow these steps to install and run the PO Software application locally.
 
-4. Create a local environment file:
-   Copy-Item .env.example .env
+### Prerequisites
 
-5. Open `.env` and configure your local settings. Generate a strong, random `SESSION_SECRET` and configure your administrator credentials.
+- Node.js 22 LTS (Version `22.23.4`): https://nodejs.org/en/download
+- Git: https://git-scm.com/downloads
+- A code editor such as Visual Studio Code (recommended).
 
-6. Initialize the administrator accounts:
-   npm run create-admin
+### Setup Instructions
 
-7. Start the application:
-   npm start
+**1. Clone the GitHub repository.**
 
-8. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open a terminal and run:
+
+
+git clone https://github.com/TrenPatt/PO-Software.git
+cd PO-Software
+
+
+**2. Install project dependencies.**
+
+
+npm install
+
+
+On Windows PowerShell, use `npm.cmd install` if the standard command is blocked by the execution policy.
+
+**3. Create a local environment file.**
+
+
+Copy-Item .env.example .env
+
+
+**4. Configure environment variables.**
+
+Open the newly created `.env` file and configure your local settings:
+
+- Generate a strong, random `SESSION_SECRET`.
+
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+- Configure your administrator usernames and passwords.
+- Ensure each administrator has unique credentials.
+
+Each team member should configure their own local credentials. Never upload your `.env` file to GitHub.
+
+**5. Initialize the administrator accounts.**
+
+npm run create-admin
+
+On Windows PowerShell, use:
+
+npm.cmd run create-admin
+
+
+**6. Start the application.**
+
+npm start
+
+On Windows PowerShell, use:
+
+npm.cmd start
+
+**7. Open the application.**
+
+Navigate to the following address in your browser:
+
+http://localhost:3000
+
+### Important Notes
+
+- The SQLite database is automatically created locally when the application initializes.
+- Each team member has their own local database and administrator accounts.
+- Do not commit or upload your `.env` file, SQLite database, or `node_modules` folder to GitHub.
+- Ensure you have been added as a collaborator to the private GitHub repository.
+- If another team member has pushed changes, run `git pull origin main` before starting your work to get the latest version.
 
 ## Administrator Setup
 
