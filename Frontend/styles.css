@@ -1,146 +1,370 @@
-/* ================================
-   Global Styles
-================================ */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f8;
-    color: #333;
+:root {
+    --navy: #17365d;
+    --navy-dark: #0d2440;
+    --blue: #245486;
+    --blue-soft: #eef4ff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --line: #dfe7f1;
+    --bg: #f3f7fb;
+    --danger: #b42318;
+    --danger-bg: #fee4e2;
+    --success: #067647;
+    --card: #ffffff;
+    --shadow: 0 12px 30px rgba(18, 58, 92, 0.12);
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
 
-/* ================================
-   Header
-================================ */
+img {
+    max-width: 100%;
+    display: block;
+}
 
-header {
+button, input, select {
+    font: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.top-header {
     width: 100%;
-    height: 80px;
-    background-color: #17365d;
-
+    background: var(--navy);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 0 35px;
-
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    padding: 0 30px;
+    min-height: 80px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
-
-
-/* ================================
-   Left Side of Header
-================================ */
 
 .left-header {
     display: flex;
     align-items: center;
-    gap: 15px;
 }
 
-.left-header a {
+.brand-link {
     display: flex;
     align-items: center;
+    gap: 12px;
     text-decoration: none;
+    color: #fff;
 }
 
-
-/* Company Logo */
-
-.logo {
-    height: 50px;
-    width: auto;
-    display: block;
+.logo-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4da3ff, #2d6fb3);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.1rem;
 }
 
-
-/* Company Name / Brand Text */
+.logo-mark.large {
+    width: 68px;
+    height: 68px;
+    font-size: 1.7rem;
+    margin: 0 auto 18px;
+}
 
 .brand-text {
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
-
-/* ================================
-   Navigation
-================================ */
-
-nav {
+.main-nav {
     display: flex;
     align-items: center;
+    gap: 8px;
+}
+
+.main-nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.logout-button,
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.logout-button,
+.secondary-button {
+    background: #fff;
+    color: var(--navy);
+    padding: 10px 14px;
+    font-weight: 700;
+}
+
+.primary-button {
+    background: var(--blue);
+    color: #fff;
+    padding: 12px 18px;
+    font-weight: 700;
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.logout-button:hover {
+    transform: translateY(-1px);
+}
+
+.login-page-body {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #eaf3ff, #f2f5f8);
+}
+
+.login-main {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    width: min(100%, 440px);
+    padding: 36px 28px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.login-header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--muted);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-form label,
+.input-group label {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.login-form input,
+.user-form input,
+.user-form select,
+.user-toolbar input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.login-form .primary-button {
+    margin-top: 6px;
+}
+
+.page-main {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 20px 40px;
+}
+
+.page-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.page-banner h1 {
+    font-size: clamp(2rem, 2vw + 1rem, 3rem);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.info-card,
+.table-card,
+.user-form-panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+.info-card {
+    padding: 22px;
+}
+
+.info-card h2 {
+    margin-bottom: 10px;
+}
+
+.quick-links {
+    list-style: none;
+    display: grid;
     gap: 10px;
 }
 
-nav a {
-    color: white;
+.quick-links a {
+    color: var(--blue);
     text-decoration: none;
-
-    font-size: 15px;
-    font-weight: 500;
-
-    padding: 12px 18px;
-    border-radius: 6px;
-
-    transition: background-color 0.2s ease,
-                color 0.2s ease;
+    font-weight: 600;
 }
 
-
-/* Hover Effect */
-
-nav a:hover {
-    background-color: #245486;
+.user-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
-
-/* Active / Selected Link */
-
-nav a.active {
-    background-color: #2f75b5;
+.user-toolbar input {
+    flex: 1;
 }
 
+.user-form-panel {
+    padding: 22px;
+    margin-bottom: 20px;
+}
 
-/* ================================
-   Mobile / Smaller Screens
-================================ */
+.user-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.table-card {
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+th {
+    background: var(--blue-soft);
+    font-size: 0.9rem;
+}
+
+.action-button {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(180, 35, 24, 0.2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.form-message {
+    min-height: 22px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.form-message.error {
+    color: var(--danger);
+}
+
+.form-message.success {
+    color: var(--success);
+}
 
 @media (max-width: 700px) {
-
-    header {
-        height: auto;
-        min-height: 80px;
-
-        flex-direction: column;
-        align-items: stretch;
-
-        padding: 15px 20px;
-
-        gap: 15px;
-    }
-
-    .left-header {
-        justify-content: center;
-    }
-
-    nav {
-        justify-content: center;
+    .top-header {
         flex-wrap: wrap;
+        justify-content: center;
+        padding: 18px 20px;
+        gap: 12px;
     }
 
-    nav a {
-        font-size: 14px;
-        padding: 10px 14px;
+    .main-nav,
+    .header-actions,
+    .user-toolbar {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .logo {
-        height: 42px;
+    .page-banner {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

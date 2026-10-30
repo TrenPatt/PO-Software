@@ -1,0 +1,29 @@
+{
+  "name": "po-software",
+  "version": "1.0.0",
+  "description": "Purchase Order software with secure authentication and role-based access",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "create-admin": "node backend/init-admin.js",
+    "test": "node --test backend/*.test.js"
+  },
+  "keywords": [
+    "po-software",
+    "express",
+    "sqlite",
+    "security"
+  ],
+  "author": "PO-Software Team",
+  "license": "MIT",
+  "dependencies": {
+    "argon2": "^0.45.1",
+    "better-sqlite3": "^11.7.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0"
+  }
+}

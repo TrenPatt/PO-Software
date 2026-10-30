@@ -1,23 +1,33 @@
-<!--Login Page-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power Apps Pro INC.</title>
-
+    <title>PO-Software Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="login-page-body">
+    <main class="login-main">
+        <section class="login-card">
+            <div class="login-header">
+                <div class="logo-mark large">PO</div>
+                <h1>Welcome back</h1>
+                <p>Sign in to access the purchase order system.</p>
+            </div>
 
-<div id="header"></div>
+            <form id="loginForm" class="login-form" novalidate>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" autocomplete="username" required>
 
-<main>
-  <h1>Index Page</h1>
-  <p>Index = Login page</p>
-</main>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
 
-<div id="footer"></div>
-<script src="script.js"></script>
+                <button type="submit" class="primary-button">Login</button>
+                <p id="loginMessage" class="form-message" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
