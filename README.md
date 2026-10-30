@@ -96,9 +96,9 @@ git pull origin main
 
 AFTER DONE WORKING
 git add .
- git status
- git commit -m "Describe the changes made"
- git push origin main
+git status
+git commit -m "Describe the changes made"
+git push origin main
 
 ### Important Notes
 
