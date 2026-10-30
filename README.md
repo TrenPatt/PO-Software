@@ -78,6 +78,17 @@ http://localhost:3000
 Ctrl + C, to end the local host in the open terminal
 
 
+**10. Push and Pull**
+BEFORE STARTING TO WORK 
+git pull origin main
+
+
+AFTER DONE WORKING
+git add .
+ git status
+ git commit -m "Describe the changes made"
+ git push origin main
+
 ### Important Notes
 
 - The SQLite database is automatically created locally when the application initializes.
