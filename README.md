@@ -73,6 +73,11 @@ Navigate to the following address in your browser:
 
 http://localhost:3000
 
+
+**8. Closing**
+Ctrl + C, to end the local host in the open terminal
+
+
 ### Important Notes
 
 - The SQLite database is automatically created locally when the application initializes.
