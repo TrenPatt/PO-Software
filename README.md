@@ -75,8 +75,20 @@ http://localhost:3000
 
 
 **8. Closing**
+
 Ctrl + C, to end the local host in the open terminal
 
+**9. Re-open the application.**
+
+npm start
+
+On Windows PowerShell, use:
+
+npm.cmd start
+
+Navigate to the following address in your browser:
+
+http://localhost:3000
 
 ### Important Notes
 
