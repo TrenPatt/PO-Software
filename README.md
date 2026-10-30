@@ -90,15 +90,28 @@ Navigate to the following address in your browser:
 http://localhost:3000
 
 **10. Push and Pull**
+
 BEFORE STARTING TO WORK 
+
 git pull origin main
 
 
 AFTER DONE WORKING
+<<<<<<< HEAD
 git add .
 git status
 git commit -m "Describe the changes made"
 git push origin main
+=======
+
+git add . 
+
+git status 
+
+git commit -m "Describe the changes made" 
+
+git push origin main 
+>>>>>>> e2b07c052365c0da8a2e4f5fab82410501dd7d04
 
 ### Important Notes
 
