@@ -9,7 +9,7 @@ function requireAuth(req, res, next) {
   }
 
   const session = getSessionByToken(token);
-  if (!session) {
+  if (!session || session.status !== 'active') {
     return res.status(401).json({ error: 'Session invalid or expired.' });
   }
 
@@ -18,6 +18,7 @@ function requireAuth(req, res, next) {
     username: session.username,
     role: session.role,
     status: session.status,
+    department: session.department,
   };
   req.sessionToken = token;
   next();
@@ -54,6 +55,7 @@ function authStatus(req, res) {
       username: req.user.username,
       role: req.user.role,
       status: req.user.status,
+      department: req.user.department,
     },
   });
 }

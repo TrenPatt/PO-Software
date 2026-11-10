@@ -19,26 +19,27 @@ router.get('/', requireAuth, (req, res) => {
                 SELECT *
                 FROM purchase_requests
                 WHERE requester_id = ?
-                ORDER BY submitted_at DESC
+                ORDER BY submitted_at DESC, id DESC
             `).all(req.user.id);
 
         } else if (req.user.role === 'approver') {
 
-            // Approvers see submitted requests
-            requests = db.prepare(`
-                SELECT
-                    p.*,
-                    u.username AS requester_name
-                FROM purchase_requests p
-                JOIN users u ON p.requester_id = u.id
-                ORDER BY
-                    CASE p.status
-                        WHEN 'Pending' THEN 0
-                        WHEN 'Approved' THEN 1
-                        WHEN 'Denied' THEN 2
-                    END,
-                    p.submitted_at DESC
-            `).all();
+            // Approvers only see requests from their department
+if (!req.user.department) {
+    return res.status(403).json({
+        error: 'Ask an admin to assign your department first.'
+    });
+}
+
+requests = db.prepare(`
+    SELECT
+        p.*,
+        u.username AS requester_name
+    FROM purchase_requests p
+    JOIN users u ON u.id = p.requester_id
+    WHERE p.department = ? COLLATE NOCASE
+    ORDER BY p.submitted_at ASC, p.id ASC
+`).all(req.user.department);
 
         } else {
 
@@ -79,6 +80,11 @@ router.post(
       unit_cost,
       justification
     } = req.body;
+    if (!req.user.department) {
+    return res.status(403).json({
+        error: 'Ask an admin to assign your department first.'
+    });
+}
 
     // Validate required fields
     if (
@@ -100,6 +106,17 @@ router.post(
       });
     }
 
+if (
+    item_name.trim().length > 150 ||
+    vendor.trim().length > 150 ||
+    description.trim().length > 2000 ||
+    justification.trim().length > 2000
+) {
+    return res.status(400).json({
+        error: 'One or more fields are too long.'
+    });
+}
+
     const parsedQuantity = Number(quantity);
     const parsedCost = Number(unit_cost);
 
@@ -116,25 +133,27 @@ router.post(
 
     try {
       const result = db.prepare(`
-        INSERT INTO purchase_requests (
-          requester_id,
-          item_name,
-          vendor,
-          description,
-          quantity,
-          unit_cost,
-          justification
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `).run(
-        req.user.id,
-        item_name.trim(),
-        vendor.trim(),
-        description.trim(),
-        parsedQuantity,
-        parsedCost,
-        justification.trim()
-      );
+    INSERT INTO purchase_requests (
+        requester_id,
+        department,
+        item_name,
+        vendor,
+        description,
+        quantity,
+        unit_cost,
+        justification
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+`).run(
+    req.user.id,
+    req.user.department,
+    item_name.trim(),
+    vendor.trim(),
+    description.trim(),
+    parsedQuantity,
+    parsedCost,
+    justification.trim()
+);
 
       res.status(201).json({
         message: 'Purchase request submitted successfully.',
@@ -150,6 +169,97 @@ router.post(
       });
     }
   }
+);
+
+// Approve or deny a pending purchase request
+router.post(
+    '/:id/decision',
+    requireAuth,
+    requireRole('approver'),
+    (req, res) => {
+
+        const requestId = Number(req.params.id);
+        const decision = req.body?.decision;
+        const comment = req.body?.comment ?? '';
+
+        // Validate request ID
+        if (!Number.isSafeInteger(requestId) || requestId <= 0) {
+            return res.status(400).json({
+                error: 'Invalid request ID.'
+            });
+        }
+
+        // Validate decision
+        if (decision !== 'Approved' && decision !== 'Denied') {
+            return res.status(400).json({
+                error: 'Decision must be Approved or Denied.'
+            });
+        }
+
+        // Validate optional comment
+        if (typeof comment !== 'string' || comment.length > 1000) {
+            return res.status(400).json({
+                error: 'Comment must be up to 1000 characters.'
+            });
+        }
+
+        // Ensure the approver has a department
+        if (!req.user.department) {
+            return res.status(403).json({
+                error: 'Your account needs a department.'
+            });
+        }
+
+        try {
+
+            // Change the status only if the request is
+            // pending, not cancelled, and belongs
+            // to the approver's department.
+            const result = db.prepare(`
+                UPDATE purchase_requests
+                SET
+                    status = ?,
+                    decision_comment = ?,
+                    decided_by = ?,
+                    decided_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+                  AND status = 'Pending'
+                  AND cancelled_at IS NULL
+                  AND department = ? COLLATE NOCASE
+            `).run(
+                decision,
+                decision === 'Denied'
+                    ? (comment.trim() || null)
+                    : null,
+                req.user.id,
+                requestId,
+                req.user.department
+            );
+
+            // The request could not be updated
+            if (result.changes === 0) {
+                return res.status(409).json({
+                    error: 'Request unavailable, outside your department, or already decided.'
+                });
+            }
+
+            // Successful decision
+            res.json({
+                message: `Request #${requestId} ${decision.toLowerCase()} successfully.`,
+                requestId,
+                status: decision
+            });
+
+        } catch (error) {
+
+            console.error('Decision failed:', error);
+
+            res.status(500).json({
+                error: 'Unable to save the decision.'
+            });
+
+        }
+    }
 );
 
 // Cancel a purchase request

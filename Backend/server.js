@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const { initializeDatabase, db } = require('./db');
 const { getUserByUsername, verifyPassword, createSessionRecord, revokeSessionToken, getUserById, getSessionByToken } = require('./auth');
-const { requireAuth, requireAdmin, authStatus, requireCsrf } = require('./middleware');
+const { requireAuth, requireAdmin, requireRole, authStatus, requireCsrf } = require('./middleware');
 const { sanitizeUsername, isValidRole } = require('./auth');
 const { validateUsername, validatePassword, validateRole, handleValidationError } = require('./validate');
 const userRoutes = require('./users');
@@ -57,8 +57,6 @@ const loginLimiter = rateLimit({
   message: { error: 'Too many login attempts. Please try again later.' },
   skipSuccessfulRequests: true,
 });
-
-app.use('/api', loginLimiter);
 
 app.use((req, res, next) => {
   if (!req.cookies.csrf_token) {
@@ -190,7 +188,7 @@ app.get('/user.html', requireAuth, requireAdmin, (req, res) => {
   res.sendFile(path.join(frontendDir, 'user.html'));
 });
 
-app.get('/purchase-order.html', requireAuth, (req, res) => {
+app.get('/purchase-order.html', requireAuth, requireRole('requestor'), (req, res) => {
   res.sendFile(path.join(frontendDir, 'purchase-order.html'));
 });
 app.get('/view-requests.html', requireAuth, (req, res) => {

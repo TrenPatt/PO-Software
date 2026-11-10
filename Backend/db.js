@@ -67,6 +67,31 @@ function initializeDatabase() {
       `);
   }
 
+  // Add departments to users
+  const userColumns = db.prepare(
+    'PRAGMA table_info(users)'
+  ).all();
+
+  if (!userColumns.some(column => column.name === 'department')) {
+    db.exec('ALTER TABLE users ADD COLUMN department TEXT');
+  }
+
+  // Add approval details to purchase requests
+  const approvalColumns = [
+    ['department', 'TEXT'],
+    ['decided_by', 'INTEGER'],
+    ['decided_at', 'TEXT'],
+    ['decision_comment', 'TEXT']
+  ];
+
+  for (const [name, type] of approvalColumns) {
+    if (!requestColumns.some(column => column.name === name)) {
+        db.exec(
+            `ALTER TABLE purchase_requests ADD COLUMN ${name} ${type}`
+        );
+    }
+  }
+
   const adminCount = db.prepare('SELECT COUNT(*) AS count FROM users WHERE role = ? AND status = ?').get('admin', 'active').count;
   if (adminCount === 0) {
     console.warn('No active admin user found. Use "npm run create-admin" to bootstrap one.');

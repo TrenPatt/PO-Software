@@ -53,7 +53,7 @@ function getUserById(id) {
 
 function getSessionByToken(token) {
   return db.prepare(`
-    SELECT s.*, u.username, u.role, u.status
+    SELECT s.*, u.username, u.role, u.status, u.department
     FROM sessions s
     JOIN users u ON u.id = s.user_id
     WHERE s.session_token = ? AND s.revoked_at IS NULL AND s.expires_at > ?

@@ -42,6 +42,18 @@
                         <option value="admin">admin</option>
                     </select>
                 </div>
+                <div class="input-group">
+                    <label for="newDepartment">
+                        Department (required for requestors/approvers)
+                    </label>
+
+                    <input
+                        id="newDepartment"
+                        name="department"
+                        type="text"
+                        maxlength="60"
+                        placeholder="e.g. Finance">
+                </div>
                 <button type="submit" class="primary-button">Create User</button>
                 <p id="userFormMessage" class="form-message" aria-live="polite"></p>
             </form>
@@ -53,6 +65,7 @@
                     <tr>
                         <th>Username</th>
                         <th>Role</th>
+                        <th>Department</th>
                         <th>Status</th>
                         <th>Created</th>
                         <th>Actions</th>
@@ -60,7 +73,7 @@
                 </thead>
                 <tbody id="userTableBody">
                     <tr>
-                        <td colspan="5">Loading users...</td>
+                        <td colspan="6">Loading users...</td>
                     </tr>
                 </tbody>
             </table>

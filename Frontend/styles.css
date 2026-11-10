@@ -549,3 +549,46 @@ th {
     background: #e5e7eb;
     color: #374151;
 }
+
+/* Approve and Deny buttons */
+
+.approve-request-button,
+.deny-request-button,
+.department-user-button {
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+/* Approve - Green */
+.approve-request-button {
+    background: #d1fadf;
+    color: #05603a;
+}
+
+/* Deny - Red */
+.deny-request-button {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+/* Set Department - Blue */
+.department-user-button {
+    background: #e6efff;
+    color: #154c9c;
+}
+
+/* Disabled buttons */
+.approve-request-button:disabled,
+.deny-request-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Allow longer request details to wrap */
+.requests-table td {
+    white-space: normal;
+}
