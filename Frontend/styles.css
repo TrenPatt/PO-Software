@@ -592,3 +592,11 @@ th {
 .requests-table td {
     white-space: normal;
 }
+
+/* Required Field Asterisks */
+
+.required-star {
+    color: #dc2626;
+    font-weight: bold;
+    margin-left: 3px;
+}
