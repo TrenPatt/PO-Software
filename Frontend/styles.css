@@ -446,3 +446,106 @@ th {
         padding: 18px;
     }
 }
+
+/* Purchase Request Viewing */
+
+.requests-section {
+    margin-top: 30px;
+    padding: 24px;
+    overflow: hidden;
+}
+
+.requests-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.requests-heading p {
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.requests-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.requests-table th,
+.requests-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.requests-table th {
+    background: var(--blue-soft);
+    color: var(--navy);
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff4cc;
+    color: #805b00;
+}
+
+.status-approved {
+    background: #d1fadf;
+    color: #05603a;
+}
+
+.status-denied {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+@media (max-width: 600px) {
+    .requests-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* Cancel Purchase Request */
+
+.cancel-request-button {
+    background: #fee4e2;
+    color: #b42318;
+    border: 1px solid #fecdca;
+    padding: 7px 13px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-request-button:hover {
+    background: #fecdca;
+}
+
+.cancel-request-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Cancelled request status */
+
+.status-cancelled {
+    background: #e5e7eb;
+    color: #374151;
+}

@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const user = await fetchCurrentUser();
         configureAuthenticatedNav(user);
+        if (document.getElementById('requestTableBody')) {
+            initViewRequests(user);
+        }
         if (document.getElementById('dashboardWelcome')) {
             renderDashboard(user);
         }
@@ -332,4 +335,249 @@ function initPurchaseRequestForm() {
 
     });
 
+}
+
+async function initViewRequests(user) {
+
+    const isRequester = user.role === 'requestor';
+    const isApprover = user.role === 'approver';
+
+    const title = document.getElementById('requestsTitle');
+    const description = document.getElementById('requestsDescription');
+
+    if (isRequester) {
+
+        title.textContent = 'My Purchase Requests';
+
+        description.textContent =
+            'View your submitted requests and track their approval status.';
+
+    } else if (isApprover) {
+
+        title.textContent = 'Purchase Requests to Review';
+
+        description.textContent =
+            'View purchase requests submitted by requestors.';
+
+    } else {
+
+        title.textContent = 'Purchase Requests';
+        description.textContent = 'Access denied.';
+
+        return;
+    }
+
+    document.getElementById('refreshRequests')
+        .addEventListener('click', loadRequests);
+
+    
+// Handle cancellation button clicks
+document.getElementById('requestTableBody')
+    .addEventListener('click', async (event) => {
+
+        const button = event.target.closest('.cancel-request-button');
+
+        if (!button) return;
+
+        const requestId = button.dataset.requestId;
+
+        const confirmed = window.confirm(
+            `Are you sure you want to cancel purchase request #${requestId}?`
+        );
+
+        if (!confirmed) return;
+
+        button.disabled = true;
+
+        const message = document.getElementById('requestsMessage');
+
+        try {
+
+            const response = await apiRequest(
+                `/api/purchase-requests/${requestId}/cancel`,
+                {
+                    method: 'DELETE'
+                }
+            );
+
+            message.textContent = response.message;
+            message.className = 'form-message success';
+
+            // Refresh the request table
+            await loadRequests();
+
+        } catch (error) {
+
+            message.textContent = error.message;
+            message.className = 'form-message error';
+
+            button.disabled = false;
+
+        }
+
+    });
+
+    await loadRequests();
+
+
+    async function loadRequests() {
+
+        const tableHead = document.getElementById('requestTableHead');
+        const tableBody = document.getElementById('requestTableBody');
+        const message = document.getElementById('requestsMessage');
+
+        message.textContent = '';
+
+        try {
+
+            const response = await apiRequest('/api/purchase-requests');
+
+            const requests = response.requests;
+
+            tableHead.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            // Different columns depending on user role
+            
+            if (isRequester) {
+
+                tableHead.innerHTML = `
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Item</th>
+                        <th>Vendor</th>
+                        <th>Quantity</th>
+                        <th>Unit Cost</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                        <th>Action</th>
+                    </tr>
+                `;
+
+
+            } else {
+
+                tableHead.innerHTML = `
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Requester</th>
+                        <th>Item</th>
+                        <th>Vendor</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Justification</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                    </tr>
+                `;
+
+            }
+
+            if (requests.length === 0) {
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="${isRequester ? 8 : 9}">
+                            No purchase requests found.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            requests.forEach(request => {
+
+                const row = document.createElement('tr');
+
+                const total =
+                    Number(request.quantity) *
+                    Number(request.unit_cost);
+
+                const date = new Date(
+                    request.submitted_at + 'Z'
+                ).toLocaleDateString();
+
+                const displayStatus = request.cancelled_at
+                    ? 'Cancelled'
+                    : request.status;
+
+                const status = `
+                    <span class="status-pill status-${displayStatus.toLowerCase()}">
+                        ${escapeHtml(displayStatus)}
+                    </span>
+                `;
+
+                if (isRequester) {
+
+                                        
+                    row.innerHTML = `
+                        <td>#${request.id}</td>
+                        <td>${escapeHtml(request.item_name)}</td>
+                        <td>${escapeHtml(request.vendor)}</td>
+                        <td>${request.quantity}</td>
+                        <td>$${Number(request.unit_cost).toFixed(2)}</td>
+                        <td>$${total.toFixed(2)}</td>
+                        <td>${status}</td>
+                        <td>${date}</td>
+                        <td>
+                            ${
+                                displayStatus === 'Pending'
+                                    ? `<button
+                                        type="button"
+                                        class="cancel-request-button"
+                                        data-request-id="${request.id}">
+                                        Cancel
+                                    </button>`
+                                    : '—'
+                            }
+                        </td>
+                    `;
+
+
+                } else {
+
+                    row.innerHTML = `
+                        <td>#${request.id}</td>
+                        <td>${escapeHtml(request.requester_name)}</td>
+                        <td>${escapeHtml(request.item_name)}</td>
+                        <td>${escapeHtml(request.vendor)}</td>
+                        <td>${request.quantity}</td>
+                        <td>$${total.toFixed(2)}</td>
+                        <td>${escapeHtml(request.justification)}</td>
+                        <td>${status}</td>
+                        <td>${date}</td>
+                    `;
+
+                }
+
+                tableBody.appendChild(row);
+
+            });
+
+        } catch (error) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="${isRequester ? 9 : 9}">
+                        ${escapeHtml(error.message)}
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+}
+
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[character]));
 }

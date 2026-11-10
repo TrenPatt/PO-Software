@@ -193,6 +193,9 @@ app.get('/user.html', requireAuth, requireAdmin, (req, res) => {
 app.get('/purchase-order.html', requireAuth, (req, res) => {
   res.sendFile(path.join(frontendDir, 'purchase-order.html'));
 });
+app.get('/view-requests.html', requireAuth, (req, res) => {
+  res.sendFile(path.join(frontendDir, 'view-requests.html'));
+});
 
 app.get('/', (req, res) => {
   if (req.cookies.session_token) {

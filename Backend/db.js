@@ -49,8 +49,23 @@ function initializeDatabase() {
       submitted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (requester_id) REFERENCES users(id)
         ON DELETE CASCADE
+
+      
     );
+    
   `);
+  
+  // Add cancellation support to existing purchase requests
+  const requestColumns = db.prepare(
+      "PRAGMA table_info(purchase_requests)"
+  ).all();
+
+  if (!requestColumns.some(column => column.name === 'cancelled_at')) {
+      db.exec(`
+          ALTER TABLE purchase_requests
+          ADD COLUMN cancelled_at TEXT
+      `);
+  }
 
   const adminCount = db.prepare('SELECT COUNT(*) AS count FROM users WHERE role = ? AND status = ?').get('admin', 'active').count;
   if (adminCount === 0) {

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Purchase Requests</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<main class="page-main">
+
+    <section class="page-banner">
+        <div>
+            <p class="eyebrow">Purchase Management</p>
+            <h1>View Purchase Requests</h1>
+            <p>Track your submitted purchase requests and their approval status.</p>
+        </div>
+    </section>
+
+    <section class="info-card requests-section">
+
+        <div class="requests-heading">
+            <div>
+                <h2 id="requestsTitle">My Purchase Requests</h2>
+                <p id="requestsDescription">
+                    View your submitted requests.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="refreshRequests"
+                class="secondary-button">
+                Refresh
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="requests-table">
+
+                <thead id="requestTableHead"></thead>
+
+                <tbody id="requestTableBody">
+                    <tr>
+                        <td>Loading requests...</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p id="requestsMessage"
+           class="form-message"
+           role="status"
+           aria-live="polite"></p>
+
+    </section>
+
+</main>
+
+<div id="footer"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
