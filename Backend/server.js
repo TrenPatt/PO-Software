@@ -11,6 +11,7 @@ const { requireAuth, requireAdmin, authStatus, requireCsrf } = require('./middle
 const { sanitizeUsername, isValidRole } = require('./auth');
 const { validateUsername, validatePassword, validateRole, handleValidationError } = require('./validate');
 const userRoutes = require('./users');
+const purchaseRequestRoutes = require('./purchaseRequests');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -160,6 +161,16 @@ app.use('/api/users', (req, res, next) => {
   return next();
 });
 app.use('/api/users', userRoutes);
+
+// Purchase request routes
+app.use('/api/purchase-requests', (req, res, next) => {
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+    return requireCsrf(req, res, next);
+  }
+  return next();
+});
+
+app.use('/api/purchase-requests', purchaseRequestRoutes);
 
 const frontendDir = path.join(__dirname, '..', 'Frontend');
 

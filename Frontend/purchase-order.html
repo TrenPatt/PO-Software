@@ -12,10 +12,104 @@
 
 <div id="header"></div>
 
-<main>
-  <h1>Form Page</h1>
-  <p>This where form go</p>
+<main class="page-main">
+    <section class="page-banner">
+        <div>
+            <p class="eyebrow">Purchase Management</p>
+            <h1>Create Purchase Request</h1>
+            <p>Submit a new purchase request for approval.</p>
+        </div>
+    </section>
+
+    <section class="info-card request-form-card">
+
+        <h2>Request Information</h2>
+        <p>Complete the following information to submit your request.</p>
+
+        <form id="purchaseRequestForm">
+
+            <div class="request-form-grid">
+
+                <div class="input-group">
+                    <label for="itemName">Item / Product Name</label>
+                    <input
+                        type="text"
+                        id="itemName"
+                        required
+                        maxlength="150"
+                        placeholder="Enter item name">
+                </div>
+
+                <div class="input-group">
+                    <label for="vendor">Vendor / Supplier</label>
+                    <input
+                        type="text"
+                        id="vendor"
+                        required
+                        maxlength="150"
+                        placeholder="Enter vendor name">
+                </div>
+
+                <div class="input-group">
+                    <label for="quantity">Quantity</label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        min="1"
+                        step="1"
+                        required
+                        placeholder="Enter quantity">
+                </div>
+
+                <div class="input-group">
+                    <label for="unitCost">Unit Cost ($)</label>
+                    <input
+                        type="number"
+                        id="unitCost"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="Enter unit cost">
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="description">Item Description</label>
+                    <textarea
+                        id="description"
+                        rows="3"
+                        maxlength="2000"
+                        required
+                        placeholder="Describe the requested item or service"></textarea>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="justification">Business Justification</label>
+                    <textarea
+                        id="justification"
+                        rows="3"
+                        maxlength="2000"
+                        required
+                        placeholder="Explain why this purchase is necessary"></textarea>
+                </div>
+
+            </div>
+
+            <div class="request-total">
+                <span>Estimated Total:</span>
+                <strong id="requestTotal">$0.00</strong>
+            </div>
+
+            <button type="submit" class="primary-button">
+                Submit Purchase Request
+            </button>
+
+            <p id="requestMessage" class="form-message"
+               role="status" aria-live="polite"></p>
+
+        </form>
+    </section>
 </main>
+
 
 <div id="footer"></div>
 <script src="script.js"></script>

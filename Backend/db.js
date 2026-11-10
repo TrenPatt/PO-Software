@@ -35,6 +35,21 @@ function initializeDatabase() {
       revoked_at TEXT,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
+    CREATE TABLE IF NOT EXISTS purchase_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requester_id INTEGER NOT NULL,
+      item_name TEXT NOT NULL,
+      vendor TEXT NOT NULL,
+      description TEXT NOT NULL,
+      quantity INTEGER NOT NULL,
+      unit_cost REAL NOT NULL,
+      justification TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'Pending'
+        CHECK(status IN ('Pending', 'Approved', 'Denied')),
+      submitted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (requester_id) REFERENCES users(id)
+        ON DELETE CASCADE
+    );
   `);
 
   const adminCount = db.prepare('SELECT COUNT(*) AS count FROM users WHERE role = ? AND status = ?').get('admin', 'active').count;

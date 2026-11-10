@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById('userTableBody')) {
             initUserManagement();
         }
+        if (document.getElementById('purchaseRequestForm')) {
+            initPurchaseRequestForm();
+        }
     } catch (error) {
         window.location.href = '/index.html';
     }
@@ -252,4 +255,81 @@ async function loadUsers(searchValue = '') {
     } catch (error) {
         tableBody.innerHTML = `<tr><td colspan="5">${error.message}</td></tr>`;
     }
+}
+
+function initPurchaseRequestForm() {
+
+    const form = document.getElementById('purchaseRequestForm');
+
+    const quantityInput = document.getElementById('quantity');
+    const costInput = document.getElementById('unitCost');
+    const totalDisplay = document.getElementById('requestTotal');
+
+    const message = document.getElementById('requestMessage');
+
+    // Calculate estimated total
+    function calculateTotal() {
+
+        const quantity = Number(quantityInput.value);
+        const cost = Number(costInput.value);
+
+        const total = quantity * cost;
+
+        totalDisplay.textContent =
+            Number.isFinite(total)
+                ? total.toLocaleString('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD'
+                })
+                : '$0.00';
+    }
+
+    quantityInput.addEventListener('input', calculateTotal);
+    costInput.addEventListener('input', calculateTotal);
+
+    // Submit purchase request
+    form.addEventListener('submit', async (event) => {
+
+        event.preventDefault();
+
+        message.textContent = '';
+        message.className = 'form-message';
+
+        const requestData = {
+            item_name: document.getElementById('itemName').value.trim(),
+            vendor: document.getElementById('vendor').value.trim(),
+            quantity: quantityInput.value,
+            unit_cost: costInput.value,
+            description: document.getElementById('description').value.trim(),
+            justification: document.getElementById('justification').value.trim()
+        };
+
+        try {
+
+            const response = await apiRequest(
+                '/api/purchase-requests',
+                {
+                    method: 'POST',
+                    body: requestData
+                }
+            );
+
+            message.textContent =
+                `Request #${response.requestId} submitted successfully! Status: ${response.status}`;
+
+            message.classList.add('success');
+
+            form.reset();
+
+            calculateTotal();
+
+        } catch (error) {
+
+            message.textContent = error.message;
+            message.classList.add('error');
+
+        }
+
+    });
+
 }

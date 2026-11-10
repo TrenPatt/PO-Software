@@ -368,3 +368,81 @@ th {
         align-items: flex-start;
     }
 }
+/* Purchase Request Form */
+
+.request-form-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px;
+}
+
+.request-form-card > p {
+    color: var(--muted);
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
+.request-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font: inherit;
+    background: #fff;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    outline: 2px solid var(--blue);
+    border-color: var(--blue);
+}
+
+.input-group textarea {
+    resize: vertical;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.request-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    margin: 24px 0;
+    background: var(--blue-soft);
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.request-total strong {
+    color: var(--navy);
+    font-size: 1.3rem;
+}
+
+@media (max-width: 600px) {
+    .request-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .request-form-card {
+        padding: 18px;
+    }
+}
